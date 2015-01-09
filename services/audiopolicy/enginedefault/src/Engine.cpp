@@ -580,6 +580,9 @@ audio_devices_t Engine::getDeviceForInputSource(audio_source_t inputSource) cons
     break;
 
     case AUDIO_SOURCE_VOICE_COMMUNICATION:
+#ifdef LEGACY_ALSA_AUDIO
+        device = AUDIO_DEVICE_IN_COMMUNICATION;
+#else
         // Allow only use of devices on primary input if in call and HAL does not support routing
         // to voice call path.
         if ((getPhoneState() == AUDIO_MODE_IN_CALL) &&
@@ -617,6 +620,7 @@ audio_devices_t Engine::getDeviceForInputSource(audio_source_t inputSource) cons
             }
             break;
         }
+#endif
         break;
 
     case AUDIO_SOURCE_VOICE_RECOGNITION:
